@@ -1,7 +1,7 @@
-const path = require('path')
-const merge = require('webpack-merge')
-const baseConfig = require('./webpack.base')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path = require('path');
+const merge = require('webpack-merge');
+const baseConfig = require('./webpack.base');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = merge(baseConfig, {
   module: 'production',
@@ -11,15 +11,22 @@ module.exports = merge(baseConfig, {
     filename: 'js/[name].[contenthash:8].js',
     publicPath: '/',
     chunkFilename: 'js/[name].[contenthash:8].js'
-	},
+  },
 
   module: {
     rules: [
+      // ts
+      {
+        test: /\.tsx?$/,
+        use: {
+          loader: 'ts-loader'
+        }
+      },
       // js
       {
-				test: /\.m?jsx?$/,
-				exclude: /(node_modules|bower_components)/,
-				use: [
+        test: /\.m?jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [
           {
             loader: 'thread-loader'
           },
@@ -31,7 +38,7 @@ module.exports = merge(baseConfig, {
             }
           }
         ]
-			},
+      },
       // less
       {
         test: /\.less$/,
@@ -49,9 +56,7 @@ module.exports = merge(baseConfig, {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                require('autoprefixer')
-              ]
+              plugins: [require('autoprefixer')]
             }
           },
           {
@@ -64,8 +69,8 @@ module.exports = merge(baseConfig, {
 
   plugins: [
     new MiniCssExtractPlugin({
-			filename: 'css/[name].[contenthash:8].css',
-			chunkFilename: 'css/[name].[contenthash:8].css'
-		}),
+      filename: 'css/[name].[contenthash:8].css',
+      chunkFilename: 'css/[name].[contenthash:8].css'
+    })
   ]
-})
+});

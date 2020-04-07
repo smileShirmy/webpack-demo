@@ -1,6 +1,6 @@
-const path = require('path')
-const merge = require('webpack-merge')
-const baseConfig = require('./webpack.base')
+const path = require('path');
+const merge = require('webpack-merge');
+const baseConfig = require('./webpack.base');
 
 module.exports = merge(baseConfig, {
   mode: 'development',
@@ -10,15 +10,22 @@ module.exports = merge(baseConfig, {
     filename: 'js/[name].js',
     publicPath: '/',
     chunkFilename: 'js/[name].js'
-	},
-  
+  },
+
   module: {
     rules: [
+      // ts
+      {
+        test: /\.tsx?$/,
+        use: {
+          loader: 'ts-loader'
+        }
+      },
       // js
       {
-				test: /\.m?jsx?$/,
-				exclude: /(node_modules|bower_components)/,
-				use: [
+        test: /\.m?jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: [
           {
             loader: 'babel-loader',
             options: {
@@ -27,7 +34,7 @@ module.exports = merge(baseConfig, {
             }
           }
         ]
-			},
+      },
       // less
       {
         test: /\.less$/,
@@ -41,9 +48,7 @@ module.exports = merge(baseConfig, {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                require('autoprefixer')
-              ]
+              plugins: [require('autoprefixer')]
             }
           },
           {
@@ -55,8 +60,8 @@ module.exports = merge(baseConfig, {
   },
 
   devServer: {
-		contentBase: path.join(__dirname, './release'),
-		open: true,
+    contentBase: path.join(__dirname, './release'),
+    open: true,
     port: 9000
-	}
-})
+  }
+});
