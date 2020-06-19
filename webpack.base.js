@@ -1,11 +1,12 @@
 const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   entry: {
-    app: ['./src/index.ts']
+    app: ['./src/main.ts']
   },
 
   resolve: {
@@ -98,6 +99,7 @@ module.exports = {
         toType: 'dir'
       }
     ]),
-    new CleanWebpackPlugin()
+    new ProgressBarPlugin(),
+    new VueLoaderPlugin()
   ]
 };

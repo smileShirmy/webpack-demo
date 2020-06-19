@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.base');
+const markdownLoader = path.resolve(__dirname, './build/md-loader/index.js');
 
 module.exports = merge(baseConfig, {
   mode: 'development',
@@ -14,11 +15,24 @@ module.exports = merge(baseConfig, {
 
   module: {
     rules: [
+      // vue
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          compilerOptions: {
+            preserveWhitespace: false
+          }
+        }
+      },
       // ts
       {
         test: /\.tsx?$/,
         use: {
-          loader: 'ts-loader'
+          loader: 'ts-loader',
+          options: {
+            appendTsSuffixTo: [/\.vue$/]
+          }
         }
       },
       // js
@@ -35,9 +49,25 @@ module.exports = merge(baseConfig, {
           }
         ]
       },
-      // less
       {
-        test: /\.less$/,
+        test: /\.md$/,
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false
+              }
+            }
+          },
+          {
+            loader: markdownLoader
+          }
+        ]
+      },
+      // scss
+      {
+        test: /\.scss$/,
         use: [
           {
             loader: 'style-loader'
@@ -52,10 +82,10 @@ module.exports = merge(baseConfig, {
             }
           },
           {
-            loader: 'less-loader'
+            loader: 'sass-loader'
           }
         ]
-      }
+      },
     ]
   },
 
