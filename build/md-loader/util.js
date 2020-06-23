@@ -86,7 +86,6 @@ function clearFile(demoComponentInfos = []) {
         const componentFiles = fs.readdirSync(moduleDirPath)
         // 遍历目录下的所有文件
         componentFiles.forEach(file => {
-          console.log(file)
           // 如果不存在则删除
           if (!components.includes(file)) {
             fs.removeSync(path.join(moduleDirPath, file))
