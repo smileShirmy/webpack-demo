@@ -1,6 +1,6 @@
 # Test
 
-目前要使用 html
+这个文档好好看
 
 :::demo 这是 Demo 的说明
 ```vue
@@ -12,6 +12,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+
+function func() {
+  console.log('func')
+}
 
 @Component({})
 export default class extends Vue {

@@ -1,6 +1,5 @@
 <template>
   <div class="scss-test">
-    App.vue
     <router-view />
   </div>
 </template>
