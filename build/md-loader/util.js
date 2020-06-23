@@ -1,79 +1,115 @@
-const { compileTemplate } = require('@vue/component-compiler-utils');
-const compiler = require('vue-template-compiler');
+const fs = require('fs-extra');
+const path = require('path');
 
-function stripScript(content) {
-  const result = content.match(/<(script)>([\s\S]+)<\/\1>/);
-  return result && result[2] ? result[2].trim() : '';
+const IMPORT_TEMPLATE = `{{import}}
+
+const components: { [propName: string]: any} = {
+  {{names}}
 }
 
-function stripStyle(content) {
-  const result = content.match(/<(style)\s*>([\s\S]+)<\/\1>/);
-  return result && result[2] ? result[2].trim() : '';
+export default components;`;
+
+const demoDir = path.resolve(__dirname, '../../src/demo')
+
+function createDemoDir() {
+  if (!fs.existsSync(demoDir)) {
+    fs.mkdirSync(demoDir)
+  }
+  const index = path.join(demoDir, 'index.ts')
+  fs.writeFileSync(index, 'export default {}')
 }
 
-// 编写例子时不一定有 template。所以采取的方案是剔除其他的内容
-function stripTemplate(content) {
-  content = content.trim();
-  if (!content) {
-    return content;
+function registerDemo(component, id, ctx) {
+  const name = path.basename(ctx.resource).replace(/\..*/, '')
+  componentDir = path.join(demoDir, name)
+  if (!fs.existsSync(componentDir)) {
+    fs.mkdirSync(componentDir)
   }
-  return content.replace(/<(script|style)[\s\S]+<\/\1>/g, '').trim();
+
+  const componentFile = path.join(componentDir, `${id}.vue`)
+  fs.writeFileSync(componentFile, component)
+
+  return {
+    id,
+    moduleName: name,
+    componentName: `ava-demo-${name}${id}`
+  }
 }
 
-function pad(source) {
-  return source
-    .split(/\r?\n/)
-    .map(line => `  ${line}`)
-    .join('\n');
+function createEntry(demoComponentInfos = []) {
+  const importNames = []
+  const componentNames = []
+  demoComponentInfos.forEach(({ id, moduleName, componentName }) => {
+    const name = firstToUpper(came(componentName))
+    importNames.push(`import ${name} from './${moduleName}/${id}.vue'`)
+    componentNames.push(name)
+  })
+
+  const template = IMPORT_TEMPLATE
+    .replace('{{import}}', importNames.join('\n'))
+    .replace('{{names}}', componentNames.join(',\n'))
+
+  const entryFile = path.join(demoDir, 'index.ts')
+  fs.writeFileSync(entryFile, template)
 }
 
-function genInlineComponentText(template, script) {
-  // https://github.com/vuejs/vue-loader/blob/423b8341ab368c2117931e909e2da9af74503635/lib/loaders/templateLoader.js#L46
-  const finalOptions = {
-    source: `<div>${template}</div>`,
-    filename: 'inline-component', // TODO：这里有待调整
-    compiler
-  };
-  const compiled = compileTemplate(finalOptions);
-  // tips
-  if (compiled.tips && compiled.tips.length) {
-    compiled.tips.forEach(tip => {
-      console.warn(tip);
-    });
+// 清空没用的文件
+function clearFile(demoComponentInfos = []) {
+  if (!demoComponentInfos.length) {
+    // 如果没有任何组件清空所有目录
+    const dirs = fs.readdirSync(demoDir)
+    dirs.filter(dir => !dir.includes('.')).forEach(dir => {
+      fs.removeSync(path.join(demoDir, dir))
+    })
+    return
   }
-  // errors
-  if (compiled.errors && compiled.errors.length) {
-    console.error(
-      `\n  Error compiling template:\n${pad(compiled.source)}\n` +
-        compiled.errors.map(e => `  - ${e}`).join('\n') +
-        '\n'
-    );
-  }
-  let demoComponentContent = `
-    ${compiled.code}
-  `;
-  // todo: 这里采用了硬编码有待改进
-  script = script.trim();
-  if (script) {
-    script = script.replace(/export\s+default/, 'const democomponentExport =');
-  } else {
-    script = 'const democomponentExport = {}';
-  }
-  demoComponentContent = `(function() {
-    ${demoComponentContent}
-    ${script}
-    return {
-      render,
-      staticRenderFns,
-      ...democomponentExport
+
+  const moduleComponentMap = demoComponentInfos.reduce((pre, cur) => {
+    const name = `${cur.id}.vue`
+    const moduleName = cur.moduleName 
+    if (pre[moduleName]) {
+      pre[moduleName].push(name)
+    } else {
+      pre[moduleName] = [name]
     }
-  })()`;
-  return demoComponentContent;
+    return pre
+  }, {})
+
+  const dirs = fs.readdirSync(demoDir)
+  dirs.forEach(dir => {
+    // 找到所有 demo 的目录
+    if (!dir.includes('.')) {
+      const components = moduleComponentMap[dir]
+      // 如果有找到相应的 demo 目录，再检查文件
+      if (components) {
+        const moduleDirPath = path.join(demoDir, dir)
+        const componentFiles = fs.readdirSync(moduleDirPath)
+        // 遍历目录下的所有文件
+        componentFiles.forEach(file => {
+          console.log(file)
+          // 如果不存在则删除
+          if (!components.includes(file)) {
+            fs.removeSync(path.join(moduleDirPath, file))
+          }
+        })
+      } else {
+        // 如果找不到对应的文件夹则删除
+        fs.removeSync(path.join(demoDir, dir))
+      }
+    }
+  })
 }
+
+// 转为驼峰命名
+const came = (str) =>
+  `${str}`.replace(/-\D/g, (match) => match.charAt(1).toUpperCase());
+
+// 首字母大写
+const firstToUpper = (str) => str.replace(str[0], str[0].toUpperCase());
 
 module.exports = {
-  stripScript,
-  stripStyle,
-  stripTemplate,
-  genInlineComponentText
-};
+  registerDemo,
+  createDemoDir,
+  createEntry,
+  clearFile
+}

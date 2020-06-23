@@ -1,10 +1,4 @@
-# Test
-
-目前要使用 html
-
-:::demo 这是 Demo 的说明
-```vue
-<template>
+ <template>
   <div class="demo-scss">
     {{message}}
   </div>
@@ -18,5 +12,3 @@ export default class extends Vue {
   message = 'test123'
 }
 </script>
-```
-:::

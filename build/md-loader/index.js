@@ -1,9 +1,13 @@
 const {
-  stripScript,
-  stripTemplate,
-  genInlineComponentText
+  registerDemo,
+  createDemoDir,
+  createEntry,
+  clearFile
 } = require('./util');
 const md = require('./config');
+
+// 需要确保存在 app/demo 目录及 app/demo/index.ts 文件
+createDemoDir();
 
 module.exports = function(source) {
   const content = md.render(source);
@@ -13,10 +17,10 @@ module.exports = function(source) {
   const endTag = ':ava-demo-->';
   const endTagLen = endTag.length;
 
-  let componentString = '';
   let id = 0; // demo 的 id
   let output = []; // 输出的内容
   let start = 0; // 字符串开始位置
+  const demoComponentInfos = []; // 所有 Demo 
 
   let commentStart = content.indexOf(startTag);
   let commentEnd = content.indexOf(endTag, commentStart + startTagLen);
@@ -24,12 +28,10 @@ module.exports = function(source) {
     output.push(content.slice(start, commentStart));
 
     const commentContent = content.slice(commentStart + startTagLen, commentEnd);
-    const html = stripTemplate(commentContent);
-    const script = stripScript(commentContent);
-    let demoComponentContent = genInlineComponentText(html, script);
-    const demoComponentName = `ava-demo${id}`;
-    output.push(`<template slot="source"><${demoComponentName} /></template>`);
-    componentString += `${JSON.stringify(demoComponentName)}: ${demoComponentContent},`;
+    const demoInfo = registerDemo(commentContent, id, this)
+    demoComponentInfos.push(demoInfo)
+    
+    output.push(`<template slot="source"><${demoInfo.componentName} /></template>`);
 
     // 重新计算下一次的位置
     id++;
@@ -38,22 +40,9 @@ module.exports = function(source) {
     commentEnd = content.indexOf(endTag, commentStart + startTagLen);
   }
 
-  // 仅允许在 demo 不存在时，才可以在 Markdown 中写 script 标签
-  // todo: 优化这段逻辑
-  let pageScript = '';
-  if (componentString) {
-    pageScript = `<script>
-      export default {
-        name: 'component-doc',
-        components: {
-          ${componentString}
-        }
-      }
-    </script>`;
-  } else if (content.indexOf('<script>') === 0) { // 硬编码，有待改善
-    start = content.indexOf('</script>') + '</script>'.length;
-    pageScript = content.slice(0, start);
-  }
+  clearFile(demoComponentInfos)
+
+  createEntry(demoComponentInfos)
 
   output.push(content.slice(start));
   return `
@@ -62,6 +51,5 @@ module.exports = function(source) {
         ${output.join('')}
       </section>
     </template>
-    ${pageScript}
   `;
 };
