@@ -13,7 +13,7 @@ module.exports = function(source) {
   const endTag = ':ava-demo-->';
   const endTagLen = endTag.length;
 
-  let componenetsString = '';
+  let componentString = '';
   let id = 0; // demo 的 id
   let output = []; // 输出的内容
   let start = 0; // 字符串开始位置
@@ -29,7 +29,7 @@ module.exports = function(source) {
     let demoComponentContent = genInlineComponentText(html, script);
     const demoComponentName = `ava-demo${id}`;
     output.push(`<template slot="source"><${demoComponentName} /></template>`);
-    componenetsString += `${JSON.stringify(demoComponentName)}: ${demoComponentContent},`;
+    componentString += `${JSON.stringify(demoComponentName)}: ${demoComponentContent},`;
 
     // 重新计算下一次的位置
     id++;
@@ -41,12 +41,12 @@ module.exports = function(source) {
   // 仅允许在 demo 不存在时，才可以在 Markdown 中写 script 标签
   // todo: 优化这段逻辑
   let pageScript = '';
-  if (componenetsString) {
+  if (componentString) {
     pageScript = `<script>
       export default {
         name: 'component-doc',
         components: {
-          ${componenetsString}
+          ${componentString}
         }
       }
     </script>`;
