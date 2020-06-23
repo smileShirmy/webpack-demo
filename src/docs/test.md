@@ -7,6 +7,7 @@
 <template>
   <div class="demo-scss">
     {{msg}}
+    {{hello}}
   </div>
 </template>
 
@@ -14,16 +15,11 @@
 export default {
   data() {
     return {
-      msg: 'hello world'
+      msg: 'hello world',
+      hello: 'abc'
     }
   }
 }
 </script>
-
-<style lang="scss">
-.demo-scss {
-  color: orange;
-}
-</style>
 ```
 :::
