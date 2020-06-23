@@ -83,6 +83,14 @@ module.exports = merge(baseConfig, {
           },
           {
             loader: 'sass-loader'
+          },
+          {
+            loader: 'style-resources-loader',
+            options: {
+              patterns: [
+                path.resolve(__dirname, './src/assets/styles/variables.scss')
+              ]
+            }
           }
         ]
       },
@@ -91,7 +99,7 @@ module.exports = merge(baseConfig, {
 
   devServer: {
     contentBase: path.join(__dirname, './release'),
-    open: true,
+    open: false,
     port: 9000
   }
 });

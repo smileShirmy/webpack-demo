@@ -92,6 +92,14 @@ module.exports = merge(baseConfig, {
           },
           {
             loader: 'sass-loader'
+          },
+          {
+            loader: 'style-resources-loader',
+            options: {
+              patterns: [
+                path.resolve(__dirname, './src/assets/styles/variables.scss')
+              ]
+            }
           }
         ]
       }
