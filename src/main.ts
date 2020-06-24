@@ -5,7 +5,19 @@ import { router } from './router/index.ts'
 import components from '@/components/base/index.ts';
 import demos from '@/demo/index.ts';
 
+import {
+  Button,
+  Notification
+} from 'element-ui';
+
 import './assets/styles/index.scss';
+
+// ElementUI 组件
+;[
+  Button
+].forEach((component) => Vue.use(component));
+
+Vue.prototype.$notify = Notification;
 
 // 全局注册文档 Demo 组件
 Object.keys(demos).forEach((key) =>

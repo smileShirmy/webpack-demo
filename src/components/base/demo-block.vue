@@ -85,6 +85,7 @@ p, pre {
     box-sizing: border-box;
     padding: 14px;
     background-color: #fff;
+    border-radius: 2px;
   }
 }
 

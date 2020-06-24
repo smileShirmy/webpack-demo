@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { routes } from '@/router/index.ts';
+import { sidebar } from '@/router/index.ts';
 
 @Component({})
 export default class extends Vue {
   get menus() {
-    return routes
+    return sidebar
   }
 }
 </script>
@@ -55,7 +55,7 @@ export default class extends Vue {
     }
   }
 
-  .router-link-exact-active {
+  .router-link-active {
     color: $theme;
   }
 }

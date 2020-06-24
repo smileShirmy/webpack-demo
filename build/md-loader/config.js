@@ -2,6 +2,7 @@ const Config = require('markdown-it-chain');
 const anchorPlugin = require('markdown-it-anchor');
 const slugify = require('transliteration').slugify;
 const containers = require('./containers');
+const taskLists = require('markdown-it-task-lists');
 const overWriteFenceRule = require('./fence');
 
 const config = new Config();
@@ -16,7 +17,8 @@ config
       permalinkBefore: true
     }
   ]).end()
-  .plugin('containers').use(containers).end();
+  .plugin('containers').use(containers).end()
+  .plugin('taskLists').use(taskLists).end();
 
 const md = config.toMd();
 overWriteFenceRule(md);

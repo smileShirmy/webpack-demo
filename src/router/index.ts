@@ -4,9 +4,9 @@ import hljs from 'highlight.js';
 
 Vue.use(VueRouter)
 
-const routes: Array<RouteConfig> = [
+const sidebar: Array<RouteConfig> = [
   {
-    path: '/',
+    path: '/home',
     component: (r) => r(require('../docs/home.md')),
     meta: {
       title: 'Home'
@@ -28,6 +28,14 @@ const routes: Array<RouteConfig> = [
   }
 ]
 
+const routes: Array<RouteConfig> = [
+  {
+    path: '/',
+    redirect: '/home'
+  },
+  ...sidebar
+]
+
 const router = new VueRouter({
   routes
 })
@@ -43,6 +51,6 @@ router.afterEach(route => {
 })
 
 export {
-  routes,
+  sidebar,
   router
 };

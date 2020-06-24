@@ -1,0 +1,19 @@
+.log-notification {
+  .el-notification__title {
+    color: $theme;
+  }
+
+  .el-notification__content {
+    margin-top: 10px;
+  }
+
+  code {
+    margin: 0 .5em;
+    padding: .15em .5em;
+    font-size: 14px;
+    color: $theme;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+    background-color: #e4f1ff;
+    border-radius: 4px;
+  }
+}
