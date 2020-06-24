@@ -16,12 +16,11 @@ function createDemoDir() {
     fs.mkdirSync(demoDir)
   }
   const index = path.join(demoDir, 'index.ts')
-  fs.writeFileSync(index, 'export default {}')
+  fs.writeFileSync(index, 'export default {} as { [prop: string]: any }')
 }
 
-function registerDemo(component, id, ctx) {
-  const name = path.basename(ctx.resource).replace(/\..*/, '')
-  componentDir = path.join(demoDir, name)
+function registerDemo(component, id, filename) {
+  componentDir = path.join(demoDir, filename)
   if (!fs.existsSync(componentDir)) {
     fs.mkdirSync(componentDir)
   }
@@ -31,8 +30,8 @@ function registerDemo(component, id, ctx) {
 
   return {
     id,
-    moduleName: name,
-    componentName: `ava-demo-${name}${id}`
+    moduleName: filename,
+    componentName: `ava-demo-${filename}${id}`
   }
 }
 
