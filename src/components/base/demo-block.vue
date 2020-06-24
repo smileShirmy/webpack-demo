@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="demo-block">
     <!-- 示例 -->
     <p class="demo">
       <slot name="source"></slot>
     </p>
-    <section class="code-content" ref="meta" :style="{ height: codeHeight }">
+    <section class="code-content" ref="meta">
       <!-- 示例说明 -->
       <div class="description-wrapper" v-if="$slots.default">
         <p class="description">
@@ -31,10 +31,13 @@ export default class DemoBlock extends Vue {
 
   height = 0
 
-  @Watch('isExpaneded')
+  @Watch('isExpanded')
   expandedChange(is: boolean) {
+    const el = this.$refs.meta as HTMLDivElement
     if (is) {
-
+      el.style.height = `${this.height}px`
+    } else {
+      el.style.height = '0px'
     }
   }
 
@@ -45,45 +48,63 @@ export default class DemoBlock extends Vue {
   mounted() {
     const el = this.$refs.meta as HTMLDivElement
     const rect = el.getBoundingClientRect()
-    this.height = rect.height
+    this.height = rect.height + 40
+    el.style.height = '0px'
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.demo-block {
+  margin: 30px 0;
+  border: 1px solid #dee2e6;
+  box-shadow: 2px 2px 30px #c7ccd7;
+}
+
 p, pre {
   margin: 0;
 }
 
 .demo {
-  margin: 20px 0;
+  padding: 20px;
 }
 
 .code-content {
+  box-sizing: border-box;
   overflow: hidden;
+  transition: height .2s;
 }
 
 .description-wrapper {
   box-sizing: border-box;
-  padding: 12px;
+  margin: 20px 20px 0;
+  padding: 14px;
   background-color: #e9f0f8;
 
   .description {
     box-sizing: border-box;
-    padding: 12px;
+    padding: 14px;
     background-color: #fff;
   }
 }
 
+.source-code {
+  margin: 0 20px 20px;
+}
+
 .scroll-handler {
-  user-select: none;
-  height: 60px;
-  line-height: 60px;
+  box-sizing: border-box;
+  height: 50px;
+  line-height: 50px;
   text-align: center;
+  border-top: 1px solid $border-color;
   cursor: pointer;
+  user-select: none;
+  transition: all .2s;
 
   &:hover {
     color: $theme;
+    background-color: #f9fafc;
   }
 }
 </style>

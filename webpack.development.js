@@ -99,6 +99,7 @@ module.exports = merge(baseConfig, {
 
   devServer: {
     contentBase: path.join(__dirname, './release'),
+    stats: 'errors-only',
     open: false,
     port: 9000
   }

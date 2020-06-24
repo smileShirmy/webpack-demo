@@ -20,4 +20,48 @@
   h3 {
     font-size: 20px;
   }
+
+  table {
+    border-collapse: collapse;
+    display: table;
+    width: 100%;
+    color: #45526b;
+
+    thead {
+      background: #e8f0f9;
+      text-align: left;
+    }
+
+    tr:first-child {
+      border-bottom: 1px solid transparent;
+    }
+
+    tr:nth-child(2n) {
+      background-color: #f8f9fa;
+    }
+
+    thead tr {
+      height: 40px;
+    }
+
+    td, th:not(:last-child) {
+      border: none;
+    }
+
+    thead tr th {
+      padding-left: .8em;
+      white-space: nowrap;
+    }
+
+    td {
+      color: #596c8e;
+      padding: .6em 1em;
+      height: 30px;
+    }
+  }
+
+  ul {
+    line-height: 2;
+    padding-left: 1.2em;
+  }
 }

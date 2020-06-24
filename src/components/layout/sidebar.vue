@@ -28,8 +28,11 @@ export default class extends Vue {
 <style lang="scss" scoped>
 .app-sidebar {
   box-sizing: border-box;
+  position: fixed;
+  top: 72px;
+  left: 0;
   width: 250px;
-  min-height: 100%;
+  height: calc(100vh - 72px);
   border-right: 1px solid $border-color;
   user-select: none;
 

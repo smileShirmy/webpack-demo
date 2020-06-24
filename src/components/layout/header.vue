@@ -14,6 +14,8 @@ export default class extends Vue {}
 <style lang="scss" scoped>
 .app-header {
   box-sizing: border-box;
+  position: fixed;
+  top: 0;
   width: 100%;
   height: 72px;
   padding: 0 40px;

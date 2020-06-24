@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
     path: '/',
-    component: () => import('../views/Home.vue'),
+    component: (r) => r(require('../docs/home.md')),
     meta: {
       title: 'Home'
     }
