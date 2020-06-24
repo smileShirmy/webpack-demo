@@ -18,6 +18,11 @@ module.exports = {
 
   module: {
     rules: [
+      // css
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
       // images
       {
         test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,

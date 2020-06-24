@@ -1,12 +1,23 @@
 .markdown-style {
   code {
+    color: $theme;
     box-sizing: border-box;
-    background-color: #e9f0f8;
+    margin: 0 .1em;
+    padding: .15em .5em;
     border-radius: 4px;
-    padding: 20px;
-    line-height: 1.5;
-    font-size: 12px;
+    font-size: 14px;
     font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+    background-color: #e4f1ff;
+  }
+
+  pre {
+    code {
+      margin: 0;
+      padding: 20px;
+      line-height: 1.5;
+      font-size: 12px;
+      background-color: #e9f0f8;
+    }
   }
 
   h1 {
