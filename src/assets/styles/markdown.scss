@@ -21,6 +21,28 @@
     font-size: 20px;
   }
 
+  h4 {
+    font-size: 16px;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
+
+  h2, h3, h4, h5 {
+    a {
+      float: left;
+      margin-left: -20px;
+      opacity: 0;
+      color: $theme;
+      cursor: pointer;
+    }
+
+    &:hover a {
+      opacity: .4;
+    }
+  }
+
   table {
     border-collapse: collapse;
     display: table;

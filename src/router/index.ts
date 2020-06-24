@@ -33,10 +33,10 @@ const router = new VueRouter({
 })
 
 router.afterEach(route => {
-    Vue.nextTick(() => {
-      const blocks = document.querySelectorAll('pre code:not(.hljs)');
-      Array.prototype.forEach.call(blocks, hljs.highlightBlock);
-    })
+  Vue.nextTick(() => {
+    const blocks = document.querySelectorAll('pre code:not(.hljs)');
+    Array.prototype.forEach.call(blocks, hljs.highlightBlock);
+  })
   if (route.meta && route.meta.title) {
     document.title = route.meta.title
   }
