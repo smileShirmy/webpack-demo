@@ -82,6 +82,7 @@ export default class App extends Vue {
   top: 72px;
   left: 250px;
   width: calc(100% - 250px);
+  min-width: 1100px;
   height: calc(100vh - 72px);
   overflow-y: auto;
 

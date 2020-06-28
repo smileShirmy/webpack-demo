@@ -78,12 +78,12 @@ p, pre {
 .description-wrapper {
   box-sizing: border-box;
   margin: 20px 20px 0;
-  padding: 14px;
+  padding: 20px;
   background-color: #e9f0f8;
 
   .description {
     box-sizing: border-box;
-    padding: 14px;
+    padding: 20px;
     background-color: #fff;
     border-radius: 2px;
   }

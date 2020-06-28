@@ -104,4 +104,14 @@
       }
     }
   }
+
+  ul, ol, p {
+    line-height: 2;
+  }
+
+  .demo-block {
+    ul, ol, p {
+      line-height: 1;
+    }
+  }
 }

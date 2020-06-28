@@ -1,6 +1,6 @@
 # Test
 
-当前版本：`1.1.2` p 的 line-height 问题
+当前版本：`1.1.2`
 
 :::log
 1.1.2
@@ -26,7 +26,7 @@
 
 这个文档好好看
 
-:::demo 这是 Demo 的说明
+:::demo 这是 Demo 的说明 `Code`
 ```vue
 <template>
   <div class="demo-scss">
